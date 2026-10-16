@@ -1,0 +1,29 @@
+Categories:
+  - Gallery
+  - Multimedia
+License: MIT
+AuthorName: Ian
+SourceCode: https://github.com/euphi/DiaAbend
+IssueTracker: https://github.com/euphi/DiaAbend/issues
+Changelog: https://github.com/euphi/DiaAbend/releases
+
+AutoName: DiaAbend
+
+RepoType: git
+Repo: https://github.com/euphi/DiaAbend.git
+Binaries: https://github.com/euphi/DiaAbend/releases/download/v%v/DiaAbend-v%v.apk
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 100
+    commit: v0.1.0
+    subdir: app
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: f018ee5059769d43e5acaedbfa8298bbe2f6302d6c530dda0925b82e83d9280f
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 0.1.0
+CurrentVersionCode: 100

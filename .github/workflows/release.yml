@@ -1,0 +1,113 @@
+name: Release APK
+
+# Triggers:
+#  - Pushing a tag "v*" (e.g. v0.1.0-rc1): the normal way to release.
+#  - "Run workflow" in the Actions tab, for a test run without a real tag.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag (e.g. v0.1.0-rc1)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    env:
+      # "secrets" can't be used in an if: directly, hence the detour via env
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine release tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "name=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # F-Droid builds from the same tag and reads versionName from app/build.gradle.kts;
+      # if it doesn't match the tag, F-Droid won't pick up the update
+      - name: Check versionName matches tag
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          tag="${{ steps.tag.outputs.name }}"
+          version=$(sed -n 's/^ *versionName = "\(.*\)"/\1/p' app/build.gradle.kts)
+          if [ "v$version" != "$tag" ]; then
+            echo "::error::Tag $tag doesn't match versionName \"$version\" in app/build.gradle.kts"
+            exit 1
+          fi
+
+      # Same Java major version as F-Droid's build server (Debian trixie default-jdk = 21):
+      # F-Droid only publishes our APK if its own build is byte-identical apart from the signature
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      # The ubuntu-latest runners ship a licensed Android SDK (ANDROID_HOME is set),
+      # AGP downloads missing platforms/build-tools itself
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
+
+      # F-Droid ships our signature, so an unsigned tag release would be useless there
+      - name: Require signing key for tag releases
+        if: ${{ github.event_name == 'push' && env.HAS_KEYSTORE != 'true' }}
+        run: |
+          echo "::error::Secret ANDROID_KEYSTORE_BASE64 is missing; tag releases must be signed (F-Droid reproducible build)"
+          exit 1
+
+      - name: Decode signing keystore
+        if: ${{ env.HAS_KEYSTORE == 'true' }}
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
+
+      - name: Build release APK
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - name: Collect APK
+        run: |
+          mkdir -p out
+          apk=$(find app/build/outputs/apk/release -name '*.apk' | head -n1)
+          cp "$apk" "out/DiaAbend-${{ steps.tag.outputs.name }}.apk"
+
+      # Release text = the fastlane changelogs of this versionCode (the same text F-Droid shows)
+      - name: Write release notes
+        run: |
+          code=$(sed -n 's/^ *versionCode = \([0-9]*\)/\1/p' app/build.gradle.kts)
+          : > notes.md
+          for lang in en-US de; do
+            f="fastlane/metadata/android/$lang/changelogs/$code.txt"
+            [ -f "$f" ] && { cat "$f"; echo; } >> notes.md
+          done
+          sha=$(sha256sum "out/DiaAbend-${{ steps.tag.outputs.name }}.apk" | cut -d' ' -f1)
+          printf '\nSHA-256: `%s`\n' "$sha" >> notes.md
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: DiaAbend ${{ steps.tag.outputs.name }}
+          files: out/*.apk
+          body_path: notes.md
+          generate_release_notes: true
+          prerelease: ${{ contains(steps.tag.outputs.name, '-beta') || contains(steps.tag.outputs.name, '-rc') }}

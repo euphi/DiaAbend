@@ -1,0 +1,1 @@
+Plain photo slideshows from your home network's SMB shares, made for Fire TV

@@ -1,0 +1,38 @@
+<resources>
+    <string name="enter_address">Adresse eingeben…</string>
+    <string name="address_hint">Name oder IP-Adresse des Servers</string>
+    <string name="invalid_address">Das ist keine gültige Server-Adresse.</string>
+    <string name="search_again">Erneut suchen</string>
+    <string name="remove_server">„%1$s“ samt gespeicherter Anmeldung entfernen?</string>
+    <string name="remove">Entfernen</string>
+    <string name="start_slideshow">Diashow starten</string>
+    <plurals name="photo_count">
+        <item quantity="one">%d Foto</item>
+        <item quantity="other">%d Fotos</item>
+    </plurals>
+    <string name="no_shares">Dieser Server bietet diesem Benutzer keine Freigaben an.</string>
+    <string name="empty_folder">Hier gibt es weder Fotos noch Ordner.</string>
+    <string name="error_connect">Verbindung fehlgeschlagen: %1$s</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="login">Anmelden…</string>
+    <string name="login_title">Anmelden an %1$s</string>
+    <string name="login_ok">Anmelden</string>
+    <string name="login_required">Dieser Server verlangt eine Anmeldung.</string>
+    <string name="username">Benutzername</string>
+    <string name="password">Passwort</string>
+    <string name="no_photos">Keines der Fotos in diesem Ordner konnte angezeigt werden.</string>
+    <string name="settings">Einstellungen</string>
+    <string name="profile">DigikamFS-Auflösung</string>
+    <string name="profile_hint">Profilname, z. B. QHD</string>
+    <string name="profile_explanation">Name des DigikamFS-Auflösungsordners, der direkt geöffnet wird. Leer lassen, um alle zu durchsuchen.</string>
+    <string name="profile_off">Nicht überspringen</string>
+    <string name="min_stars">DigikamFS-Sternefilter</string>
+    <plurals name="min_stars_value">
+        <item quantity="one">ab %d Stern</item>
+        <item quantity="other">ab %d Sternen</item>
+    </plurals>
+    <plurals name="no_rated_photos">
+        <item quantity="one">Hier gibt es keine Fotos mit mindestens %d Stern.</item>
+        <item quantity="other">Hier gibt es keine Fotos mit mindestens %d Sternen.</item>
+    </plurals>
+</resources>

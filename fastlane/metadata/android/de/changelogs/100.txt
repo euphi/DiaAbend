@@ -1,0 +1,1 @@
+Erster öffentlicher Release-Kandidat: SMB-Server im Heimnetz finden, Freigaben durchblättern, Diashows mit der TV-Fernbedienung, DigikamFS-Unterstützung.

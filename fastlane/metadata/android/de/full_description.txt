@@ -1,0 +1,19 @@
+DiaAbend zeigt die Fotos von deinem Heimserver auf dem Fernseher. Mehr nicht.
+
+Schlichte Fotoviewer fürs lokale Netzwerk gibt es erstaunlich wenige. DLNA taugt nicht für große Fotosammlungen, und auf SMB-Freigaben können nur wenige Apps zugreifen, die meist völlig überladen sind. VLC kommt dem noch am nächsten, ist aber eigentlich ein Videoplayer, der eben auch Fotos zeigen kann. DiaAbend ist ein Fotoviewer und sonst nichts.
+
+<b>Funktionen</b>
+<ul>
+<li>Findet SMB-Server im lokalen Netz selbst (mDNS und Suche im eigenen Subnetz), oder du gibst die Adresse ein</li>
+<li>Gastzugang oder Anmeldung mit Benutzername und Passwort, SMB 2 und 3</li>
+<li>Freigaben und Ordner mit der TV-Fernbedienung durchblättern, Diashow aus jedem Ordner starten</li>
+<li>Diashow mit Überblendung, alle 10 Sekunden. Links/rechts: voriges/nächstes Foto, OK: Pause</li>
+<li>Fotos werden aufrecht (EXIF-Drehung) und passend zum Bildschirm gezeigt, auch 50-Megapixel-Fotos sind kein Problem</li>
+<li>JPEG, PNG, WebP, GIF, BMP, und HEIC ab Android 9</li>
+<li>Läuft ab Fire OS 5, auf Android TV und auch auf Handys und Tablets (Touch: links/rechts tippen wechselt das Foto)</li>
+</ul>
+
+<b>DigikamFS</b>
+Besonders gut passt DiaAbend zu DigikamFS (https://github.com/euphi/DigikamFS), das eine digiKam-Fotosammlung als Freigabe mit verkleinerten Kopien bereitstellt, sortiert nach Sternebewertung. DiaAbend erkennt diesen Aufbau und überspringt die Auflösungs- und Bewertungsordner: Auflösung und Mindestbewertung stellst du einmal in den Einstellungen ein und blätterst dann nur noch nach Jahr und Album.
+
+Keine Werbung, kein Tracking, kein Konto. Die App spricht nur mit den Servern in deinem eigenen Netz.

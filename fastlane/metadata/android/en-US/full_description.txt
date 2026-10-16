@@ -1,0 +1,19 @@
+DiaAbend ("slide night") shows the photos on your home server on the big screen. That's all it does.
+
+There are surprisingly few plain photo viewers for the local network. DLNA doesn't hold up with large photo collections, and only a handful of apps can open SMB shares at all, most of them bloated. VLC comes closest, but it is a video player that happens to show photos too. DiaAbend is a photo viewer and nothing else.
+
+<b>Features</b>
+<ul>
+<li>Finds SMB servers on the local network by itself (mDNS and a scan of the local subnet), or you enter the address</li>
+<li>Guest access or login with user name and password, SMB 2 and 3</li>
+<li>Browse shares and folders with the TV remote, start a slideshow of any folder</li>
+<li>Slideshow with crossfades, every 10 seconds. Left/right: previous/next photo, OK: pause</li>
+<li>Photos are shown upright (EXIF rotation) and scaled to the screen, so even 50 megapixel photos are no problem</li>
+<li>JPEG, PNG, WebP, GIF, BMP, and HEIC on Android 9 or newer</li>
+<li>Runs on Fire OS 5 and newer, Android TV, and also on phones and tablets (touch: tap left/right to switch photos)</li>
+</ul>
+
+<b>DigikamFS</b>
+DiaAbend works especially well with DigikamFS (https://github.com/euphi/DigikamFS), which exports a digiKam photo collection as a share with downscaled copies, sorted by star rating. DiaAbend recognises this layout and skips the resolution and rating folders: you pick a resolution and a minimum rating once in the settings, and then just browse by year and album.
+
+No ads, no tracking, no accounts. The app only talks to the servers in your own network.
